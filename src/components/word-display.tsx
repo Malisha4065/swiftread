@@ -1,3 +1,4 @@
+import { useRef, useLayoutEffect, useState } from "react";
 import type { FC } from "react";
 
 type WordDisplayProps = {
@@ -5,6 +6,10 @@ type WordDisplayProps = {
 };
 
 const WordDisplay: FC<WordDisplayProps> = ({ word }) => {
+  const [offset, setOffset] = useState(0);
+  const preRef = useRef<HTMLSpanElement>(null);
+  const focalRef = useRef<HTMLSpanElement>(null);
+
   if (!word) return null;
 
   // Heuristic to find the optimal recognition point (ORP) or focal point of a word.
@@ -23,15 +28,38 @@ const WordDisplay: FC<WordDisplayProps> = ({ word }) => {
   const focalChar = word.charAt(focalIndex);
   const post = word.substring(focalIndex + 1);
 
+  useLayoutEffect(() => {
+    if (preRef.current && focalRef.current) {
+      const preWidth = preRef.current.offsetWidth;
+      const focalWidth = focalRef.current.offsetWidth;
+      setOffset(preWidth + focalWidth / 2);
+    }
+  }, [word]);
+
+
   return (
     <div className="relative h-24 w-full animate-in fade-in duration-150">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+      <div
+        className="absolute top-1/2 left-1/2 -translate-y-1/2"
+        style={{ transform: `translateX(calc(-50% - ${offset}px))` }}
+      >
+        <p className="text-5xl md:text-7xl font-light tracking-wider whitespace-nowrap invisible">
+            <span ref={preRef}>{pre}</span>
+            <span ref={focalRef} className="text-primary font-normal">{focalChar}</span>
+            <span>{post}</span>
+        </p>
+      </div>
+      <div
+        className="absolute top-1/2 left-1/2 -translate-y-1/2"
+        style={{ transform: `translateX(-${offset}px)` }}
+      >
         <p className="text-5xl md:text-7xl font-light tracking-wider whitespace-nowrap">
           <span>{pre}</span>
           <span className="text-primary font-normal">{focalChar}</span>
           <span>{post}</span>
         </p>
       </div>
+
       {/* Visual guide for the focal point */}
       <div 
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-between h-20 pointer-events-none"
