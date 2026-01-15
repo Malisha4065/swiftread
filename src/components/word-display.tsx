@@ -43,7 +43,7 @@ const WordDisplay: FC<WordDisplayProps> = ({ word }) => {
         className="absolute top-1/2 left-1/2 -translate-y-1/2"
         style={{ transform: `translateX(calc(-50% - ${offset}px))` }}
       >
-        <p className="text-5xl md:text-7xl font-light tracking-wider whitespace-nowrap invisible">
+        <p className="text-5xl md:text-7xl font-light tracking-wider whitespace-nowrap invisible my-4">
             <span ref={preRef}>{pre}</span>
             <span ref={focalRef} className="text-primary font-normal">{focalChar}</span>
             <span>{post}</span>
@@ -53,7 +53,7 @@ const WordDisplay: FC<WordDisplayProps> = ({ word }) => {
         className="absolute top-1/2 left-1/2 -translate-y-1/2"
         style={{ transform: `translateX(-${offset}px)` }}
       >
-        <p className="text-5xl md:text-7xl font-light tracking-wider whitespace-nowrap">
+        <p className="text-5xl md:text-7xl font-light tracking-wider whitespace-nowrap my-4">
           <span>{pre}</span>
           <span className="text-primary font-normal">{focalChar}</span>
           <span>{post}</span>
@@ -62,7 +62,7 @@ const WordDisplay: FC<WordDisplayProps> = ({ word }) => {
 
       {/* Visual guide for the focal point */}
       <div 
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-between h-20 pointer-events-none"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-between h-24 pointer-events-none"
         aria-hidden="true"
       >
         <div className="w-[2px] h-2 bg-primary/50 rounded-full"></div>
